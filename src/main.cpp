@@ -29,17 +29,11 @@ brain Brain;
 // Robot configuration code.
 controller Controller1 = controller(primary);
 inertial IMU = inertial(PORT5);
-
 motor Right1 = motor(PORT2, ratio6_1, true);
-
 motor Right2 = motor(PORT3, ratio18_1, true);
-
 motor Right3 = motor(PORT4, ratio6_1, true);
-
 motor Left1 = motor(PORT7, ratio6_1, false);
-
 motor Left2 = motor(PORT8, ratio18_1, false);
-
 motor Left3 = motor(PORT9, ratio6_1, false);
 
 motor_group RightDriveSmart = motor_group(Right1, Right2, Right3);
@@ -50,7 +44,6 @@ digital_out Claw = digital_out(Brain.ThreeWirePort.A);
 motor CascadeMotorA = motor(PORT1, ratio36_1, true);
 motor CascadeMotorB = motor(PORT10, ratio36_1, false);
 motor_group Cascade = motor_group(CascadeMotorA, CascadeMotorB);
-
 
 
 // generating and setting random seed
@@ -67,13 +60,10 @@ void initializeRandomSeed(){
 }
 
 
-
 void vexcodeInit() {
-
   //Initializing random seed.
   initializeRandomSeed(); 
 }
-
 
 // Helper to make playing sounds from the V5 in VEXcode easier and
 // keeps the code cleaner by making it clear what is happening.
@@ -83,44 +73,32 @@ void playVexcodeSound(const char *soundName) {
 }
 
 
-
 // define variable for remote controller enable/disable
 bool RemoteControlCodeEnabled = true;
 
-#pragma endregion VEXcode Generated Robot Configuration
-
-// Include the V5 Library
-#include "vex.h"
-  
-// Allows for easier use of the VEX Library
-using namespace vex;
-
 competition Competition;
 
-// User defined function
-void myblockfunction_Wrap_180_value(double myblockfunction_Wrap_180_value__value);
-// User defined function
-void myblockfunction_Turn__7C_Heading__heading_Wait__wait(double myblockfunction_Turn__7C_Heading__heading_Wait__wait__heading, double myblockfunction_Turn__7C_Heading__heading_Wait__wait__wait);
-// User defined function
-void myblockfunction_Drive__7C_inches__in_wait__wait(double myblockfunction_Drive__7C_inches__in_wait__wait__in, double myblockfunction_Drive__7C_inches__in_wait__wait__wait);
-// User defined function
-void myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError(double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kP, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kI, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kD, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__error, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__lastError, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__cumulativeError);
+//Initalize functions so that they can be called anywhere in the program
+void myblockfunction_Wrap_180_value(double myblockfunction_Wrap_180_value__value), myblockfunction_Turn__7C_Heading__heading_Wait__wait(double myblockfunction_Turn__7C_Heading__heading_Wait__wait__heading, double myblockfunction_Turn__7C_Heading__heading_Wait__wait__wait), myblockfunction_Drive__7C_inches__in_wait__wait(double myblockfunction_Drive__7C_inches__in_wait__wait__in, double myblockfunction_Drive__7C_inches__in_wait__wait__wait), myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError(double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kP, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kI, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kD, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__error, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__lastError, double myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__cumulativeError), calculatePosition(double distanceTraveled, double heading), setPos(double newXPos, double newYPos), odomTracking(double xPos, double yPos, double timeout);
 
-void calculatePosition(double distanceTraveled, double heading);
-
-void setPos(double newXPos, double newYPos);
-
-void odomTracking(double xPos, double yPos, double timeout);
-
-int auto2();
+int auto2(), auto3(), auto1(), driverControl(), Screen_precision = 0, Console_precision = 0, Controller1_precision = 0, Auto = 0;
 
 double xPos = 0.0, yPos = 0.0, heading = 0.0, turnTime = .5;
 
-int Screen_precision = 0, Console_precision = 0, Controller1_precision = 0, autoNum = 0, Auto = 0;
+float PIDOutput, kPLateral, kDLateral, kPAngular, kDAngular, LastErrorLateral, LastErrorAngular, LateralPos, ErrorLateral, ErrorAngular, turnSpeed, driveSpeed, leftDriveSpeed, rightDriveSpeed, ReturnMath, startHeading, MaxSpeed, ControllerTurnSpeed;
 
-float PIDOutput, kPLateral, kDLateral, kPAngular, kDAngular, LastErrorLateral, LastErrorAngular, LateralPos, ErrorLateral, ErrorAngular, turnSpeed, driveSpeed, leftDriveSpeed, rightDriveSpeed, ReturnMath, startHeading, MaxSpeed, AutoNum, ControllerTurnSpeed;
+bool ClawOpen, StopProgram, auton;
 
-bool ClawOpen;
+const int AUTO_NUM = 3;
+
+event RUN = event();
+event STOP = event();
+event AutoSelect = event();
+event Auto1 = event();
+event Auto2 = event();
+event Auto3 = event();
+event Driver = event();
+
 
 // User defined function
 void myblockfunction_Wrap_180_value(double myblockfunction_Wrap_180_value__value) {
@@ -208,21 +186,6 @@ void myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError
   PIDOutput = myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kP * myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__error + (myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kI * myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__cumulativeError + myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__kD * (myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__error - myblockfunction_PID__kP__kP_kI__kI_kD__kD_error__error_lastError__lastError_cumulativeError__cumulativeError__lastError));
 }
 
-/*
-void calculatePosition(double distanceTraveled, double heading) {
-  // Convert heading from degrees to radians
-  double headingRadians = heading * (M_PI / 180.0);
-  
-  // Calculate the change in position
-  double deltaX = distanceTraveled * cos(headingRadians);
-  double deltaY = distanceTraveled * sin(headingRadians);
-  
-  // Update the global position
-  xPos += deltaX;
-  yPos += deltaY;
-  
-}
-  */
 
 void setPos(double newXPos, double newYPos) {
  xPos = newXPos;
@@ -236,7 +199,7 @@ struct Waypoint {
 };
 
 // Adjust these values to match your robot.
-const double PATH_LOOKAHEAD = 8.0;  // inches
+const double PATH_LOOKAHEAD = 12.0;  // inches
 const double PATH_SPEED = 6.0;      // base voltage
 const double PATH_TRACK_WIDTH = 12.0; // wheel-to-wheel width, inches
 
@@ -245,29 +208,33 @@ double clampValue(double value, double low, double high) {
     if (value > high) return high;
     return value;
 }
+
 double Distance(double x, double y){
     return sqrt(x * x + y * y);
 }
-double pointDistance(double x1, double y1,
-                     double x2, double y2) {
+
+double pointDistance(double x1, double y1, double x2, double y2) {
     double dx = x2 - x1;
     double dy = y2 - y1;
     return Distance(dx, dy);
 }
 
+double qualdraticFormula(double a, double b, double c, bool positive) {
+    double discriminant = b * b - 4.0 * a * c;
+    if (discriminant < 0.0) return NAN;
+
+    double root = sqrt(discriminant);
+    if (positive) {
+        return (-b + root) / (2.0 * a);
+    } else {
+        return (-b - root) / (2.0 * a);
+    }
+}
+
 // Find a point on the path approximately one lookahead
 // radius ahead of the robot.
-bool getLookaheadPoint(
-    const Waypoint path[],
-    int count,
-    int startSegment,
-    double robotX,
-    double robotY,
-    double lookahead,
-    double &targetX,
-    double &targetY,
-    int &targetSegment
-) {
+bool getLookaheadPoint(const Waypoint path[], int count, int startSegment, double robotX, double robotY, double lookahead,
+                        double &targetX, double &targetY, int &targetSegment) {
     double radiusSquared = lookahead * lookahead;
 
     for (int i = startSegment; i < count - 1; i++) {
@@ -316,9 +283,11 @@ bool getLookaheadPoint(
     targetSegment = count - 2;
     return false;
 }
+
 bool withinRange(double checkedValue, double constantValue, double range) {
     return checkedValue<= constantValue + range/2 && checkedValue >= constantValue - range/2;
 }
+
 void followPath(const Waypoint path[], int count, double timeout) {
     if (count < 2) return;
     double lastX = path[count - 1].x;
@@ -335,18 +304,22 @@ void followPath(const Waypoint path[], int count, double timeout) {
             path[count - 1].y
         );
 
+        double currentSpeed = clampValue(
+            finalDistance * 0.7,
+            2.0,
+            PATH_SPEED
+        );
         // Stop when the final waypoint is reached.
-        if (finalDistance < 1.5) break;
-        if (withinRange(xPos, lastX, 1.5) && withinRange(yPos, lastY, 1.5)) break;
+        if (finalDistance < 4) break;
         // Advance through waypoints as we approach them.
         while (segment < count - 2 &&
                pointDistance(
                    xPos, yPos,
                    path[segment + 1].x,
                    path[segment + 1].y
-               ) < PATH_LOOKAHEAD * 0.5) {
-            segment++;
-        }
+               ) < PATH_LOOKAHEAD * 0.4) {
+                segment++;
+              }
 
         double targetX, targetY;
         int targetSegment = segment;
@@ -386,8 +359,8 @@ void followPath(const Waypoint path[], int count, double timeout) {
         double correction =
             PATH_SPEED * curvature * PATH_TRACK_WIDTH / 2.0;
 
-        double leftVolts = PATH_SPEED + correction;
-        double rightVolts = PATH_SPEED - correction;
+        double leftVolts = currentSpeed + correction;
+        double rightVolts = currentSpeed - correction;
 
         leftVolts = clampValue(leftVolts, -12.0, 12.0);
         rightVolts = clampValue(rightVolts, -12.0, 12.0);
@@ -402,7 +375,6 @@ void followPath(const Waypoint path[], int count, double timeout) {
     RightDriveSmart.stop(hold);
 }
 
-
 void turnTo(double newHeading, double timeout) {
     double disHead = newHeading - heading;
 
@@ -413,7 +385,13 @@ void turnTo(double newHeading, double timeout) {
     myblockfunction_Turn__7C_Heading__heading_Wait__wait(disHead, timeout);
 }
 
+void turnLeft(double degrees, double timeout) {
+    myblockfunction_Turn__7C_Heading__heading_Wait__wait(-degrees, timeout);
+}
 
+void turnRight(double degrees, double timeout) {
+    myblockfunction_Turn__7C_Heading__heading_Wait__wait(degrees, timeout);
+}
 void driveTo(double x, double y, double Time) {
     double disX = x - xPos;
     double disY = y - yPos;
@@ -435,6 +413,14 @@ void driveTo(double x, double y, double Time) {
     myblockfunction_Turn__7C_Heading__heading_Wait__wait(disHead, TurnTime);
     myblockfunction_Drive__7C_inches__in_wait__wait(distance, DriveTime);
     setPos(x, y);
+}
+
+void driveForward(double distance, double time) {
+  myblockfunction_Drive__7C_inches__in_wait__wait(distance, time);
+}
+
+void driveBackward(double distance, double time) {
+  myblockfunction_Drive__7C_inches__in_wait__wait(-distance, time);
 }
 
 // Used to find the format string for printing numbers with the
@@ -504,7 +490,6 @@ int whenStarted2() {
         wait(50, msec);
     }
 
-    AutoNum = 3.0;
 
     double previousLateralPos = 0.0;
     bool firstUpdate = true;
@@ -512,10 +497,8 @@ int whenStarted2() {
     while (true) {
         // Average the four 6:1 drive motor encoders.
         LateralPos =
-            ((Right1.position(turns) +
-              Right3.position(turns) +
-              Left1.position(turns) +
-              Left3.position(turns)) / 4.0)
+            ((RightDriveSmart.position(turns) +
+              LeftDriveSmart.position(turns)) / 2.0)
             * ((2.75 * M_PI) * (4.0 / 3.0)) / 1.85;
 
         // Read current heading.
@@ -545,27 +528,88 @@ int whenStarted2() {
     return 0;
 }
 
-// "when Brain screen pressed" hat block
-void onevent_Brain_screen_pressed_0() {
- Auto += 1;
-  if (Auto > 3) {
-    Auto = 0;
+void onevent_STOP_0() {
+  StopProgram = true;
+  Cascade.stop();
+  RightDriveSmart.stop();
+  LeftDriveSmart.stop();
+}
+
+void onevent_RUN_0() {
+  // This functions as a control mechanism
+  RightDriveSmart.setStopping(hold);
+  LeftDriveSmart.setStopping(hold);
+  Cascade.setVelocity(100.0, percent);
+  if (Auto == 0.0) {
+    Driver.broadcast();
+  } else if (Auto == 1.0) {
+    // 1st Auto slot
+    Auto1.broadcast();
+  } else if (Auto == 2.0) {
+    // 2nd Auto slot
+    Auto2.broadcast();
+  } else if (Auto == 3.0) {
+    // 3rd Auto slot
+    Auto3.broadcast();
+  } else {
+    printf("ERROR: No Auto found; check AutoNum");
+    Brain.Screen.setCursor(4, 1);
+    Brain.Screen.print("ERROR: No Auto found; check AutoNum");
   }
 }
 
+void onevent_Controller1ButtonY_pressed_0() {
+  if (Auto < AUTO_NUM) {
+    Auto = Auto + 1.0;
+  }
+  else {
+    Auto = 0.0;
+  }
+}
 
-// "when driver control" hat block
-int ondriver_drivercontrol_0() {
-  RightDriveSmart.setVelocity(100.0, percent);
-  LeftDriveSmart.setVelocity(100.0, percent);
+// "when Controller1 ButtonB pressed" hat block
+void onevent_Controller1ButtonB_pressed_0() {
+  StopProgram = true;
+  RUN.broadcast();
+}
+
+void onevent_Controller1ButtonA_pressed_0() {
+  STOP.broadcast();
+}
+
+void onevent_Auto1_0() {
+  auto1();
+}
+
+void onevent_Auto2_0() {
+  auto2();
+}
+
+void onevent_Auto3_0() {
+  auto3();
+}
+
+// "when I receive Driver" hat block
+int auto1(){
+  return -1;
+}
+
+void onevent_Driver_0() {
+  // Drive Code
+  RightDriveSmart.setStopping(coast);
+  LeftDriveSmart.setStopping(coast);
+  auton = false;
+  // Set non-drive motor velocites and other setup here
   Cascade.setVelocity(100.0, percent);
   ClawOpen = true;
+  // Turning Velocity
   ControllerTurnSpeed = .75;
-  while (true) {
+  while (!StopProgram) {
     leftDriveSpeed = (Controller1.Axis3.position() - Controller1.Axis1.position() * ControllerTurnSpeed) / 10.0;
     rightDriveSpeed = (Controller1.Axis3.position() + Controller1.Axis1.position() * ControllerTurnSpeed) / 10.0;
     RightDriveSmart.spin(forward, rightDriveSpeed, volt);
     LeftDriveSmart.spin(forward, leftDriveSpeed, volt);
+    // If statements for buttons go here
     if (Controller1.ButtonR2.pressing()) {
       Cascade.spin(forward);
     } else if (Controller1.ButtonR1.pressing() && Cascade.position(degrees) >= 0.0) {
@@ -597,16 +641,138 @@ int ondriver_drivercontrol_0() {
     }
   wait(5, msec);
   }
+}
+
+// "when Brain screen pressed" hat block
+void onevent_Brain_screen_pressed_0() {
+ Auto += 1;
+  if (Auto > AUTO_NUM) {
+    Auto = 0;
+  }
+}
+
+void onevent_AutoSelect_0() {
+  // Auto Selector - works off of screen press and Y
+  Brain.Screen.setFillColor(purple);
+  Brain.Screen.clearLine(3);
+  Brain.Screen.setCursor(Brain.Screen.row(), 1);
+  Brain.Screen.setCursor(3, 2);
+  if (Auto == 0.0) {
+    Brain.Screen.print("Auto: Driver");
+  } else if (Auto == 1.0) {
+    // Replace with "Auto: YOURAUTONAME"
+    Brain.Screen.print("Auto: Skills");
+  } else if (Auto == 2.0) {
+    // Replace with "Auto: YOURAUTONAME"
+    Brain.Screen.print("Auto: Match Right");
+  } else if (Auto == 3.0) {
+    // Replace with "Auto: YOURAUTONAME"
+    Brain.Screen.print("Auto: Match Close");
+  } else {
+    Brain.Screen.print("Auto: ERROR");
+  }
+}
+
+// "when driver control" hat block
+// "when autonomous" hat block
+int onauton_autonomous_0() {
+  Auto = 3.0;
+  RUN.broadcast();
   return 0;
 }
-void initAuto(double maxSpeed){
+
+// "when driver control" hat block
+int ondriver_drivercontrol_0() {
+  Auto = 0.0;
+  RUN.broadcast();
+  return 0;
+}
+void initAuto(double maxSpeed, double Heading = 0.0) {
   MaxSpeed = maxSpeed; //was initially 10.0
   RightDriveSmart.setStopping(hold);
   LeftDriveSmart.setStopping(hold);
-  IMU.setRotation(0.0, degrees);
+  IMU.setRotation(Heading, degrees);
   Cascade.setVelocity(100.0, percent);
+  Claw.set(false);
+  auton = true;
 }
-int auto1(){
+int auto3(){
+  setPos(0.0, 0.0);
+  initAuto(8.0);
+//   // Skills
+//   // Preload
+  Cascade.spinFor(forward, 360.0, degrees, false);
+  driveForward(6.0, .5); // +, (0,6)
+  driveBackward(6.125, .5); // - (0, 0)
+  driveForward(6.0, .5);// + (0, 6)
+  driveBackward(6.125, .5); // - (0, 0)
+  driveForward(15.5, 1.0); // + (0, 15)
+  turnRight(90.0, 1.0);// + theata = 90, (0, 16)
+  MaxSpeed = 4.0;
+  driveForward(17.0, 1.0); // + (17, 16)
+  Cascade.spinFor(reverse, 290.0, degrees, true); // up
+  Claw.set(true);
+  wait(1.0, seconds);
+  Cascade.spinFor(reverse, 100.0, degrees, false); // down
+  // Field Obj 1
+  MaxSpeed = 8.0;
+  driveBackward(10.0, .75); // - (7, 16)
+  turnRight(180.0, .75); // + theata = 270, (7, 16)
+  driveForward(11.0, .75); // + (-4, 16)
+  turnRight(90.0, .75); // + theata = 0, (-4, 16)
+  driveForward(40.5, 1.5); // + 
+  turnLeft(1.0, .9); // -
+  MaxSpeed = 6.5;
+  while (ClawDist.objectDistance(mm) > 40.0) {
+    driveForward(2.0, .4);
+  }
+  Claw.set(false);
+  wait(0.75, seconds);
+  MaxSpeed = 6.0;
+  Cascade.spinFor(forward, 380.0, degrees, false);
+  turnLeft(75.0, 1.0); // -
+  driveForward(19.5, 1.0); //+
+  Cascade.spinFor(reverse, 270.0, degrees, true);
+  Claw.set(true);
+  // Match Load
+  MaxSpeed = 8.0;
+  turnLeft(90.0, 1.0); //-
+  Cascade.spinFor(reverse, 80.0, degrees, false);
+  driveBackward(31.0, 1.5); //-
+  turnRight(180.0, 1.0); //+
+  driveForward(10.0, 1.0); //+
+
+  Claw.set(false);
+  wait(1.0, seconds);
+  Cascade.spinFor(forward, 80.0, degrees, false);
+  driveBackward(15.0, 1.0); //-
+  turnLeft(90.0, 1.0); //-
+  MaxSpeed = 4.0;
+  Cascade.spinFor(forward, 500.0, degrees, false);
+  driveForward(45.0, 2.0); //+
+
+  Cascade.spinFor(reverse, 220.0, degrees, true);
+  Claw.set(true);
+  wait(1.0, seconds);
+  driveBackward(38.0, 2.0); //-
+  Cascade.spinFor(reverse, 300.0, degrees, false);
+  turnRight(180.0, 1.0); //+
+  driveForward(18.0, 1.0); //+
+  MaxSpeed = 4.0;
+  Claw.set(false);
+  wait(1.0, seconds);
+  Cascade.spinFor(forward, 80.0, degrees, false);
+  driveBackward(15.0, 1.0); //-
+  Cascade.spinFor(forward, 100.0, degrees, false);
+  turnLeft(90.0, 1.0); //-
+  MaxSpeed = 4.0;
+  Cascade.spinFor(forward, 600.0, degrees, false);
+  driveForward(45.0, 2.0); //+
+  Cascade.spinFor(reverse, 220.0, degrees, true);
+  Claw.set(true);
+  return 0;
+}
+int auto5(){
     initAuto(8.0);
   // Skills
   Claw.set(false);
@@ -645,19 +811,6 @@ int auto1(){
   return 0;
 }
 // "when autonomous" hat block
-int onauton_autonomous_0() {
-  auto2();
-  /*
-if (autoNum == 1) {
-    auto1();
-  } else if (autoNum == 2) {
-    auto2();
-  } else if (autoNum == 3) {
-    testAuto();
-  }
-    */
-  return 0;
-}
 
 /*
 functions to use:
@@ -690,18 +843,27 @@ Waypoint path[] = {
   int count = sizeof(path) / sizeof(path[0]);
   follow path(path, count);
 */
+
 int auto2(){
-  initAuto(8.0);
+  initAuto(8.0, 0.0);
   setPos(0.0, 0.0);
-  Waypoint path[] = {
+  Cascade.spinFor(forward, 150.0, degrees, true);
+    Waypoint path[] = {
     {0.0, 0.0},
-    {0.0, 12.0},
-    {-10.0, 10.0},
+    {0.0, 7.0},
+    {0.0, 14.0},
+    {-12.0, 12.0}
   };
   int count = sizeof(path) / sizeof(path[0]);
+  followPath(path, count, 2.0);
+  Claw.set(true);
+  wait(0.2, seconds);
+  driveTo(0.0, 6.0, 1.0);
+  //BackUp(7.0, 1.0);
+  driveTo(0.0, 6.0, 1.0);
+  //BackUp(8.0, 1.0);
+  turnTo(180.0, .62);
 
-  followPath(path, count, 5.0);
-  driveTo(0.0, 12.0, 1.0);
   return 0; //ends it - don't be a muffin and mess with this
 }
 int testAuto(){
@@ -718,7 +880,6 @@ void VEXcode_driver_task() {
   drive0.stop();
   return;
 }
-
 
 
 void VEXcode_auton_task() {
@@ -740,7 +901,17 @@ int main() {
   vexcodeInit();
 
   // register event handlers
+  AutoSelect(onevent_AutoSelect_0);
+  STOP(onevent_STOP_0);
+  Controller1.ButtonY.pressed(onevent_Controller1ButtonY_pressed_0);
+  Controller1.ButtonB.pressed(onevent_Controller1ButtonB_pressed_0);
+  Controller1.ButtonA.pressed(onevent_Controller1ButtonA_pressed_0);
   Brain.Screen.pressed(onevent_Brain_screen_pressed_0);
+  RUN(onevent_RUN_0);
+  Auto1(onevent_Auto1_0);
+  Auto2(onevent_Auto2_0);
+  Auto3(onevent_Auto3_0);
+  Driver(onevent_Driver_0);
 
   wait(15, msec);
   vex::task ws1(whenStarted2);
